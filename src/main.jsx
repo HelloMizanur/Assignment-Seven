@@ -12,7 +12,11 @@ const router = createBrowserRouter([
     path: "/",
     Component: RootLayout,
     children: [
-      { index: true, Component: HomePage },
+      {
+        index: true,
+        Component: HomePage,
+        loader: () => fetch("friendsData.json"),
+      },
       { path: "/timeline", Component: TimelinePage },
       { path: "/stats", Component: StatsPage },
     ],
