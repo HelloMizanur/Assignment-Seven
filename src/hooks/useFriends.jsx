@@ -6,7 +6,7 @@ const useFriends = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("friendsData.json");
+      const res = await fetch("/friendsData.json");
       const data = await res.json();
       setFriendsData(data);
       setLoading(false);
