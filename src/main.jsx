@@ -6,6 +6,7 @@ import RootLayout from "./Layout/RootLayout.jsx";
 import HomePage from "./Pages/homePage/HomePage.jsx";
 import TimelinePage from "./Pages/timelinePage/TimelinePage.jsx";
 import StatsPage from "./Pages/statsPage/StatsPage.jsx";
+import NotFoundPage from "./Pages/notFoundPage/NotFoundPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       },
       { path: "/timeline", Component: TimelinePage },
       { path: "/stats", Component: StatsPage },
+      {
+        path: "*",
+        Component: NotFoundPage,
+      },
     ],
   },
 ]);

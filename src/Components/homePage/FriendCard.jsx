@@ -1,11 +1,15 @@
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
+import { Link } from "react-router";
 const FriendCard = ({ friend }) => {
   const relativeDate = formatDistanceToNow(new Date(friend.next_due_date), {
     addSuffix: true,
   });
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-all hover:shadow-md">
+    <Link
+      to={"/friendDetail"}
+      className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-all hover:shadow-md"
+    >
       <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-gray-50">
         <img
           src={friend.picture}
@@ -33,7 +37,7 @@ const FriendCard = ({ friend }) => {
       >
         {friend.status}
       </div>
-    </div>
+    </Link>
   );
 };
 

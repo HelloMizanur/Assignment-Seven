@@ -4,7 +4,7 @@ import { useLoaderData } from "react-router";
 
 const FriendsList = () => {
   const friendsData = useLoaderData();
-  console.log(friendsData);
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <h2 className="text-2xl font-bold text-gray-800 mb-8">Your Friends</h2>
