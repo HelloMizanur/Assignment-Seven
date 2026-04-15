@@ -7,7 +7,7 @@ const FriendCard = ({ friend }) => {
   });
   return (
     <Link
-      to={"/friendDetail"}
+      to={`/friendDetail/${friend.id}`}
       className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center transition-all hover:shadow-md"
     >
       <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-gray-50">
