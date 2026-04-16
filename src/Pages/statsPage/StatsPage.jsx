@@ -1,13 +1,12 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { useInteractions } from "../../context/InteractionContext"; // Context import
+import { useInteractions } from "../../context/InteractionContext";
 
 const COLORS = ["#0f172a", "#4338ca", "#0d9488"];
 
 const StatsPage = () => {
   const { interactions } = useInteractions();
 
-  // ১. Interaction array theke data calculate kora
   const chartData = [
     {
       name: "Text",
@@ -21,9 +20,7 @@ const StatsPage = () => {
       name: "Video",
       value: interactions.filter((i) => i.type === "Video").length,
     },
-  ].filter((item) => item.value > 0); // Sudhu jeta data ase sheta dekhabe
-
-  // Default data jodi kono interaction na thake (jite chart khali na lage)
+  ].filter((item) => item.value > 0);
   const displayData =
     chartData.length > 0 ? chartData : [{ name: "No Data", value: 1 }];
   const displayColors = chartData.length > 0 ? COLORS : ["#e2e8f0"];
@@ -66,7 +63,6 @@ const StatsPage = () => {
             </PieChart>
           </ResponsiveContainer>
 
-          {/* Center text for total interactions */}
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
             <span className="text-3xl font-black text-gray-800">
               {interactions.length}
@@ -77,7 +73,6 @@ const StatsPage = () => {
           </div>
         </div>
 
-        {/* Legend */}
         <div className="flex justify-center gap-8 mt-8">
           {chartData.length > 0 ? (
             chartData.map((entry, index) => (

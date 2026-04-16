@@ -8,8 +8,6 @@ import { InteractionProvider } from "./context/InteractionContext"; // Import ko
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <InteractionProvider>
-      {" "}
-      {/* Wrap here */}
       <RouterProvider router={router} />
     </InteractionProvider>
   </StrictMode>,

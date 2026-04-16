@@ -17,7 +17,6 @@ const FriendDetails = () => {
   const { id } = useParams();
   const { friendsData, loading } = useFriends();
 
-  // Context theke interaction-er data ebong function call kora
   const { addInteraction, interactions } = useInteractions();
 
   if (loading) {
@@ -43,7 +42,6 @@ const FriendDetails = () => {
   const handleAction = (type) => {
     const title = `${type} with ${expectedFriend.name}`;
 
-    // Toast Notification
     toast.success(`✅ ${title}`, {
       position: "top-right",
       autoClose: 2000,
@@ -54,14 +52,13 @@ const FriendDetails = () => {
     });
 
     const interactionData = {
-      id: Date.now(), // Unique ID for each interaction
+      id: Date.now(),
       date: new Date().toLocaleString(),
       type: type,
       title: title,
       friendId: expectedFriend.id,
     };
 
-    // Context-e data pathano (setInteractions bad diye addInteraction use kora hoyeche)
     addInteraction(interactionData);
   };
 
@@ -69,7 +66,6 @@ const FriendDetails = () => {
     <div className="min-h-screen bg-gray-50 p-4 md:p-10 flex justify-center items-start">
       <ToastContainer />
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
-        {/* Left Section - Profile Info */}
         <div className="w-full md:w-1/3 p-8 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center text-center bg-white">
           <div className="relative mb-6">
             <img
@@ -142,7 +138,6 @@ const FriendDetails = () => {
           </div>
         </div>
 
-        {/* Right Section - Stats and Actions */}
         <div className="flex-1 p-8 flex flex-col">
           <div className="grid grid-cols-3 gap-4 mb-10">
             <div className="bg-slate-50 p-5 rounded-xl text-center border border-gray-100">

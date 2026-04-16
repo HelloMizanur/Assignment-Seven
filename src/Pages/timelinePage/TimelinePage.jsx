@@ -3,18 +3,14 @@ import { MessageSquare, Phone, Video, ChevronDown } from "lucide-react";
 import { useInteractions } from "../../context/InteractionContext"; // Context import koro
 
 const TimelinePage = () => {
-  // Context theke dynamic interactions niye asha
   const { interactions } = useInteractions();
 
   const [filter, setFilter] = useState("All");
 
-  // Logic to filter the dynamic array
-  // Data reverse kora hoyeche jate latest interaction shobcheye upore thake
   const filteredData = [...interactions]
     .reverse()
     .filter((item) => (filter === "All" ? true : item.type === filter));
 
-  // Icon mapping
   const renderIcon = (type) => {
     const iconProps = { size: 22, className: "text-orange-400" };
     switch (type) {
@@ -33,7 +29,6 @@ const TimelinePage = () => {
     <div className="max-w-2xl mx-auto p-12 bg-white min-h-screen text-slate-800">
       <h1 className="text-4xl font-bold mb-10 tracking-tight">Timeline</h1>
 
-      {/* Filter Dropdown */}
       <div className="relative mb-12 w-72">
         <select
           value={filter}
@@ -50,14 +45,12 @@ const TimelinePage = () => {
         </div>
       </div>
 
-      {/* Timeline Entries */}
-      <div className="relative space-y-10 before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-slate-100 before:via-slate-50 before:to-transparent">
+      <div className="relative space-y-10 before:absolute before:inset-0 before:ml-2.75 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-slate-100 before:via-slate-50 before:to-transparent">
         {filteredData.map((item, index) => (
           <div
             key={item.id || index}
             className="relative flex items-start gap-6 group"
           >
-            {/* Icon container with background for timeline effect */}
             <div className="mt-1 bg-white relative z-10 p-1">
               {renderIcon(item.type)}
             </div>
@@ -67,7 +60,6 @@ const TimelinePage = () => {
                 <span className="text-gray-800">{item.type}</span>
                 <span className="text-blue-400 font-normal">
                   {item.title.split(item.type)[1]}{" "}
-                  {/* "with Person Name" part extract kora */}
                 </span>
               </h3>
               <p className="text-slate-400 text-sm mt-1">{item.date}</p>

@@ -1,16 +1,22 @@
-# React + Vite
+### 👥 KeenKeeper — Keep Your Friendships Alive
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+KeenKeeper is a sophisticated friendship management dashboard designed to help users nurture and maintain meaningful connections. It ensures that no friend is left behind by tracking interaction history, setting relationship goals, and providing insightful analytics on your communication habits.
 
-Currently, two official plugins are available:
+### 🛠️ Technologies UsedTechnologyPurposeReact.jsCore library for building the dynamic User InterfaceReact RouterManaging multi-page navigation (Home, Timeline, Stats)Context APIGlobal state management for real-time interaction trackingTailwind CSSCrafting a modern, fully responsive design for all devicesRechartsVisualizing communication data with dynamic Pie ChartsReact ToastifyProviding instant user feedback via toast notifications
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 🌟 3 Key Features
 
-## React Compiler
+1. Automated Interaction & Global Sync
+   Every time you log a Call, Text, or Video check-in from a friend's profile, the app uses the Context API to instantly sync that data across the entire platform. Your interaction count in the banner and the analytics on the stats page update immediately without a refresh.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Visual Relationship Health Tracking
+   The app features an intelligent status system—Overdue, Almost Due, and On-Track. Friend cards automatically change their visual styling and background colors based on these statuses, allowing you to identify which relationships need attention at a single glance.
 
-## Expanding the ESLint configuration
+3. Dynamic Analytics & Timeline Filtering
+   KeenKeeper goes beyond simple lists by offering a dedicated Stats Page with Recharts integration. Additionally, the Timeline Page includes a robust filtering system, allowing you to sort through months of history by specific interaction types (Call, Text, or Video).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🔗 Project Links
+
+Live Demo: [View KeenKeeper Live](https://keenkeeper2026.netlify.app/)
+
+Developed by Mizanur Rahman — April 2026
