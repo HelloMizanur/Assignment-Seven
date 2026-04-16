@@ -47,8 +47,4 @@ KeenKeeper offers a dedicated **Stats Page** with **Recharts** integration for d
 
 ---
 
-## ⚙️ Local Installation
 
-1. **Clone the project:**
-   ```bash
-   git clone [https://github.com/your-username/keenkeeper.git](https://github.com/HelloMizanur/Assignment-Seven/)
