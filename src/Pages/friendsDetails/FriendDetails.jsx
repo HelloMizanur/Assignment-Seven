@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import useFriends from "../../hooks/useFriends";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,21 +11,33 @@ import {
   Archive,
   Trash2,
 } from "lucide-react";
+import { useInteractions } from "../../context/InteractionContext";
 
 const FriendDetails = () => {
   const { id } = useParams();
   const { friendsData, loading } = useFriends();
 
-  const [interactions, setInteractions] = useState([]);
+  // Context theke interaction-er data ebong function call kora
+  const { addInteraction, interactions } = useInteractions();
 
   if (loading) {
-    return <span className="loading loading-bars loading-xl"></span>;
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <span className="loading loading-bars loading-xl text-blue-600"></span>
+      </div>
+    );
   }
 
-  const expectedFriend = friendsData.find((friend) => friend.id === Number(id));
+  const expectedFriend = friendsData?.find(
+    (friend) => friend.id === Number(id),
+  );
 
   if (!expectedFriend) {
-    return <div className="p-10 text-center">Friend not found!</div>;
+    return (
+      <div className="p-10 text-center font-bold text-gray-500">
+        Friend not found!
+      </div>
+    );
   }
 
   const handleAction = (type) => {
@@ -42,21 +54,22 @@ const FriendDetails = () => {
     });
 
     const interactionData = {
+      id: Date.now(), // Unique ID for each interaction
       date: new Date().toLocaleString(),
       type: type,
       title: title,
+      friendId: expectedFriend.id,
     };
 
-    setInteractions((prev) => [...prev, interactionData]);
-
-    console.log("New Interaction Added:", interactionData);
-    console.log(interactions);
+    // Context-e data pathano (setInteractions bad diye addInteraction use kora hoyeche)
+    addInteraction(interactionData);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-10 flex justify-center items-start">
       <ToastContainer />
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+        {/* Left Section - Profile Info */}
         <div className="w-full md:w-1/3 p-8 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center text-center bg-white">
           <div className="relative mb-6">
             <img
@@ -80,44 +93,56 @@ const FriendDetails = () => {
                       ? "bg-green-500"
                       : expectedFriend.status === "almost due"
                         ? "bg-orange-500"
-                        : "bg-gray-500" // Default color jodi kono status na mele
+                        : "bg-gray-500"
                 }`}
               >
                 {expectedFriend.status}
               </span>
             )}
-            {expectedFriend.tags &&
-              expectedFriend.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter"
-                >
-                  {tag}
-                </span>
-              ))}
+            {expectedFriend.tags?.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
 
           <p className="mt-6 text-gray-500 italic text-sm leading-relaxed px-2">
             "{expectedFriend.bio}"
           </p>
 
-          <p className="text-xs text-blue-500 font-medium mt-4">
+          <p className="text-xs text-blue-500 font-medium mt-4 underline decoration-blue-100 underline-offset-4">
             Preferred: {expectedFriend.email}
           </p>
 
           <div className="mt-10 w-full space-y-4 text-left border-t pt-6 border-gray-50">
-            <button className="flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-blue-600 transition-all w-full">
-              <Clock size={18} /> Snooze 2 Weeks
+            <button className="flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-blue-600 transition-all w-full group">
+              <Clock
+                size={18}
+                className="group-hover:rotate-12 transition-transform"
+              />{" "}
+              Snooze 2 Weeks
             </button>
-            <button className="flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all w-full">
-              <Archive size={18} /> Archive
+            <button className="flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all w-full group">
+              <Archive
+                size={18}
+                className="group-hover:scale-110 transition-transform"
+              />{" "}
+              Archive
             </button>
-            <button className="flex items-center gap-3 text-sm font-medium text-red-400 hover:text-red-600 transition-all w-full">
-              <Trash2 size={18} /> Delete Contact
+            <button className="flex items-center gap-3 text-sm font-medium text-red-400 hover:text-red-600 transition-all w-full group">
+              <Trash2
+                size={18}
+                className="group-hover:shake transition-transform"
+              />{" "}
+              Delete Contact
             </button>
           </div>
         </div>
 
+        {/* Right Section - Stats and Actions */}
         <div className="flex-1 p-8 flex flex-col">
           <div className="grid grid-cols-3 gap-4 mb-10">
             <div className="bg-slate-50 p-5 rounded-xl text-center border border-gray-100">
@@ -125,7 +150,7 @@ const FriendDetails = () => {
                 {expectedFriend.days_since_contact}
               </div>
               <div className="text-[10px] text-blue-500 font-bold uppercase mt-2 border-t border-blue-100 pt-2">
-                Days Since Contact
+                Days Since
               </div>
             </div>
 
@@ -142,7 +167,11 @@ const FriendDetails = () => {
               <div className="text-sm font-bold text-gray-800 truncate">
                 {new Date(expectedFriend.next_due_date).toLocaleDateString(
                   "en-US",
-                  { month: "short", day: "numeric", year: "numeric" },
+                  {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  },
                 )}
               </div>
               <div className="text-[10px] text-blue-500 font-bold uppercase mt-2 border-t border-blue-100 pt-2">
@@ -174,50 +203,22 @@ const FriendDetails = () => {
               Quick Check-In
             </h3>
             <div className="flex justify-around md:justify-start md:gap-16 items-center">
-              <button
-                onClick={() => handleAction("Call")}
-                className="flex flex-col items-center group"
-              >
-                <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                  <Phone
-                    size={24}
-                    className="text-gray-600 group-hover:text-white"
-                  />
-                </div>
-                <span className="text-xs font-bold text-gray-500 mt-3 group-hover:text-blue-600 uppercase tracking-tighter">
-                  Call
-                </span>
-              </button>
-
-              <button
-                onClick={() => handleAction("Text")}
-                className="flex flex-col items-center group"
-              >
-                <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                  <MessageSquare
-                    size={24}
-                    className="text-gray-600 group-hover:text-white"
-                  />
-                </div>
-                <span className="text-xs font-bold text-gray-500 mt-3 group-hover:text-blue-600 uppercase tracking-tighter">
-                  Text
-                </span>
-              </button>
-
-              <button
-                onClick={() => handleAction("Video")}
-                className="flex flex-col items-center group"
-              >
-                <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                  <Video
-                    size={24}
-                    className="text-gray-600 group-hover:text-white"
-                  />
-                </div>
-                <span className="text-xs font-bold text-gray-500 mt-3 group-hover:text-blue-600 uppercase tracking-tighter">
-                  Video
-                </span>
-              </button>
+              {["Call", "Text", "Video"].map((actionType) => (
+                <button
+                  key={actionType}
+                  onClick={() => handleAction(actionType)}
+                  className="flex flex-col items-center group"
+                >
+                  <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    {actionType === "Call" && <Phone size={24} />}
+                    {actionType === "Text" && <MessageSquare size={24} />}
+                    {actionType === "Video" && <Video size={24} />}
+                  </div>
+                  <span className="text-xs font-bold text-gray-500 mt-3 group-hover:text-blue-600 uppercase tracking-tighter transition-colors">
+                    {actionType}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </div>

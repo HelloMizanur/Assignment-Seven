@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import { MessageSquare, Phone, Video, ChevronDown } from "lucide-react";
+import { useInteractions } from "../../context/InteractionContext"; // Context import koro
 
 const TimelinePage = () => {
-  // Updated data: Only Text, Video, and Call types
-  const initialData = [
-    { id: 1, type: "Text", person: "Sarah Chen", date: "March 28, 2026" },
-    { id: 2, type: "Video", person: "Aisha Patel", date: "March 23, 2026" },
-    { id: 3, type: "Call", person: "Marcus Johnson", date: "March 19, 2026" },
-    { id: 4, type: "Text", person: "Elena Rodriguez", date: "March 15, 2026" },
-    { id: 5, type: "Video", person: "Tom Baker", date: "March 12, 2026" },
-    { id: 6, type: "Call", person: "Sarah Chen", date: "March 10, 2026" },
-  ];
+  // Context theke dynamic interactions niye asha
+  const { interactions } = useInteractions();
 
   const [filter, setFilter] = useState("All");
 
-  // Logic to filter the array
-  const filteredData =
-    filter === "All"
-      ? initialData
-      : initialData.filter((item) => item.type === filter);
+  // Logic to filter the dynamic array
+  // Data reverse kora hoyeche jate latest interaction shobcheye upore thake
+  const filteredData = [...interactions]
+    .reverse()
+    .filter((item) => (filter === "All" ? true : item.type === filter));
 
   // Icon mapping
   const renderIcon = (type) => {
-    const iconProps = { size: 22, className: "text-orange-300" };
+    const iconProps = { size: 22, className: "text-orange-400" };
     switch (type) {
       case "Text":
         return <MessageSquare {...iconProps} />;
@@ -31,7 +25,7 @@ const TimelinePage = () => {
       case "Call":
         return <Phone {...iconProps} />;
       default:
-        return null;
+        return <MessageSquare {...iconProps} />;
     }
   };
 
@@ -44,9 +38,9 @@ const TimelinePage = () => {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="w-full appearance-none bg-slate-50 border border-slate-100 py-3 px-4 pr-10 rounded-lg text-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-200 cursor-pointer shadow-sm"
+          className="w-full appearance-none bg-slate-50 border border-slate-100 py-3 px-4 pr-10 rounded-lg text-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-200 cursor-pointer shadow-sm transition-all"
         >
-          <option value="All">Filter timeline</option>
+          <option value="All">All activity</option>
           <option value="Text">Text</option>
           <option value="Video">Video</option>
           <option value="Call">Call</option>
@@ -57,27 +51,39 @@ const TimelinePage = () => {
       </div>
 
       {/* Timeline Entries */}
-      <div className="space-y-10">
-        {filteredData.map((item) => (
-          <div key={item.id} className="flex items-start gap-5">
-            <div className="mt-1">{renderIcon(item.type)}</div>
-            <div>
-              <h3 className="text-xl font-medium">
-                {item.type}
-                <span className="text-blue-300 font-normal">
-                  {" "}
-                  with {item.person}
+      <div className="relative space-y-10 before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-slate-100 before:via-slate-50 before:to-transparent">
+        {filteredData.map((item, index) => (
+          <div
+            key={item.id || index}
+            className="relative flex items-start gap-6 group"
+          >
+            {/* Icon container with background for timeline effect */}
+            <div className="mt-1 bg-white relative z-10 p-1">
+              {renderIcon(item.type)}
+            </div>
+
+            <div className="flex-1">
+              <h3 className="text-xl font-medium flex items-center gap-2">
+                <span className="text-gray-800">{item.type}</span>
+                <span className="text-blue-400 font-normal">
+                  {item.title.split(item.type)[1]}{" "}
+                  {/* "with Person Name" part extract kora */}
                 </span>
               </h3>
-              <p className="text-slate-400 text-base mt-0.5">{item.date}</p>
+              <p className="text-slate-400 text-sm mt-1">{item.date}</p>
             </div>
           </div>
         ))}
 
         {filteredData.length === 0 && (
-          <p className="text-slate-400 italic py-4">
-            No activity found for this category.
-          </p>
+          <div className="text-center py-20">
+            <p className="text-slate-300 italic text-lg">
+              No interactions recorded yet. <br />
+              <span className="text-sm">
+                Go to a friend's profile to start a conversation!
+              </span>
+            </p>
+          </div>
         )}
       </div>
     </div>

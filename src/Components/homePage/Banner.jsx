@@ -1,8 +1,10 @@
 import React from "react";
 import useFriends from "../../hooks/useFriends";
+import { useInteractions } from "../../context/InteractionContext"; // Context hook import koro
 
 const Banner = () => {
   const { friendsData, loading } = useFriends();
+  const { interactions } = useInteractions(); // Context theke interactions array-ti nilam
 
   // Loading obosthay placeholder stats
   if (loading) {
@@ -25,6 +27,9 @@ const Banner = () => {
   const needAttentionCount = friendsData.filter(
     (f) => f.status === "overdue" || f.status === "almost due",
   ).length;
+
+  // ৪. Dynamic Interaction Count
+  const totalInteractions = interactions.length;
 
   return (
     <div className="py-10">
@@ -72,9 +77,11 @@ const Banner = () => {
           </p>
         </div>
 
-        {/* Interactions - Hardcoded for now */}
+        {/* Interactions - Fully Dynamic Now! */}
         <div className="w-56 p-6 rounded-3xl bg-white border border-gray-100 shadow-sm transition-transform hover:-translate-y-1">
-          <h3 className="text-5xl font-extrabold text-blue-500">24</h3>
+          <h3 className="text-5xl font-extrabold text-blue-500">
+            {totalInteractions}
+          </h3>
           <p className="text-xs font-black text-gray-400 uppercase mt-2 tracking-widest">
             Interactions
           </p>
