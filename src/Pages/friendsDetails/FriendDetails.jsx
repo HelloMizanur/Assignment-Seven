@@ -71,9 +71,19 @@ const FriendDetails = () => {
           </h1>
 
           <div className="flex flex-wrap justify-center gap-2 mt-3">
-            {expectedFriend.status === "overdue" && (
-              <span className="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">
-                Overdue
+            {expectedFriend.status && (
+              <span
+                className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter ${
+                  expectedFriend.status === "overdue"
+                    ? "bg-red-500"
+                    : expectedFriend.status === "on-track"
+                      ? "bg-green-500"
+                      : expectedFriend.status === "almost due"
+                        ? "bg-orange-500"
+                        : "bg-gray-500" // Default color jodi kono status na mele
+                }`}
+              >
+                {expectedFriend.status}
               </span>
             )}
             {expectedFriend.tags &&
